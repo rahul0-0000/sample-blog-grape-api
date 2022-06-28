@@ -1,6 +1,11 @@
 module V1
   class Articles < Grape::API
+    helpers Auth::Authenticate
+    before do
+      error!({ error: { status: 401, message: "unauthorized" } }, 401) unless authenticated
+    end
     resource :articles do
+      
       get do
         Article.all
       end
@@ -43,6 +48,14 @@ module V1
         article.destroy
 
         status 200
+      end
+
+      segment '/:article_id' do
+        resource :comments do
+          get do
+            Comment.all
+          end
+        end
       end
     end
   end
