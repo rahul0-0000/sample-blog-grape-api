@@ -36,6 +36,9 @@ module V1
       end
       put '/:id' do
         article = Article.find(declared(params)[:id])
+        if article.author != current_user
+          error!({ error: { status: 401, message: "unauthorized" } }, 401)
+        end
         article.update!(declared(params).except(:id))
         present article
       end
@@ -45,6 +48,9 @@ module V1
       end
       delete '/:id' do
         article = Article.find(declared(params)[:id])
+        if article.author != current_user
+          error!({ error: { status: 401, message: "unauthorized" } }, 401)
+        end
         article.destroy
 
         status 200
