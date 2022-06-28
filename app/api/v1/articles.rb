@@ -7,7 +7,7 @@ module V1
     resource :articles do
       
       get do
-        Article.all
+        present Article.all, with: Entities::Articles, type: :full
       end
 
       params do

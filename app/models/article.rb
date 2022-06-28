@@ -3,4 +3,5 @@ class Article < ApplicationRecord
 
   # associations
   belongs_to :author
+  has_many :comments
 end
